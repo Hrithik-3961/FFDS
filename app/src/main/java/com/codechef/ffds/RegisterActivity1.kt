@@ -10,9 +10,8 @@ class RegisterActivity1 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.register1_activity)
-
         val binding = Register1ActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.apply {
             registerBtn.setOnClickListener {

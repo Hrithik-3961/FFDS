@@ -18,8 +18,8 @@
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_nav"
         android:background="@color/colorPrimaryDark"
-        app:itemIconTint="@android:color/black"
-        app:itemTextColor="@android:color/black"
+        app:itemIconTint="@drawable/bottom_navigation_selector"
+        app:itemTextColor="@drawable/bottom_navigation_selector"
         app:itemRippleColor="@android:color/white"
         app:itemIconSize="24dp"
         app:menu="@menu/bottom_navigation"/>

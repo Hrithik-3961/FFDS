@@ -5,12 +5,12 @@ import android.content.ContextWrapper
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.aotasoft.taggroup.TagGroup
 import com.codechef.ffds.databinding.UpdateProfileActivityBinding
 import java.io.*
 import java.util.*
@@ -27,17 +27,16 @@ class UpdateProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.update_profile_activity)
+        binding = UpdateProfileActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val tinyDB = TinyDB(this)
-
-        binding = UpdateProfileActivityBinding.inflate(layoutInflater)
 
         setDefaultData(tinyDB)
 
         binding.apply {
             uploadDp.setOnClickListener {
-                val gallery: Intent = Intent()
+                val gallery = Intent()
                 gallery.type = "image/*"
                 gallery.action = Intent.ACTION_GET_CONTENT
                 startActivityForResult(
@@ -49,24 +48,18 @@ class UpdateProfileActivity : AppCompatActivity() {
             val tags = ArrayList<String>()
             Collections.addAll(tags, *tagView.tags)
             add.setOnClickListener {
-                Log.d("tag123", "inside add on click")
                 handleTags(tags, tinyDB)
             }
 
-            tagView.setOnTagClickListener(object : TagGroup.OnTagClickListener {
+            tagView.setOnTagClickListener { _, tag, _ ->
+                tags.remove(tag)
+                tinyDB.putListString("Expectations", tags as ArrayList<String>?)
+                tagView.setTags(tags)
+            }
 
-                /* override fun onTagCrossClick(position: Int) {
-                     val tag = tagView.getTagText(position)
-                     tags.remove(tag)
-                     tinyDB.putListString("Expectations", tags as ArrayList<String>?)
-                     tagView.tags = tags
-                 }*/
-
-                override fun onTagClick(tagGroup: TagGroup?, tag: String?, position: Int) {
-
-                }
-
-            })
+            uploadTimeTable.setOnClickListener {
+                startActivity(Intent(this@UpdateProfileActivity, TimeTable::class.java))
+            }
 
             saveProfile.setOnClickListener {
                 tinyDB.putString("Bio", bio.text.toString().trim())
@@ -83,7 +76,10 @@ class UpdateProfileActivity : AppCompatActivity() {
 
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             val imageURI: Uri = data?.data!!
-            val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imageURI)
+            val bitmap = if (android.os.Build.VERSION.SDK_INT >= 29)
+                ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageURI))
+            else
+                MediaStore.Images.Media.getBitmap(contentResolver, imageURI)
             binding.dp.setImageBitmap(bitmap)
             val path = saveToInternalStorage(bitmap)
             val tinyDB = TinyDB(this)
@@ -109,13 +105,18 @@ class UpdateProfileActivity : AppCompatActivity() {
     private fun handleTags(tags: ArrayList<String>, tinyDB: TinyDB) {
         binding.apply {
             val tag = addTags.text.toString().trim()
-            Log.d("tag0", tag)
             if (tag.isNotEmpty()) {
-                tags.add(tag)
-                Log.d("tag", tags.toString())
-                tinyDB.putListString("Expectations", tags as ArrayList<String>?)
-                tagView.tag = tag
+                if (!tags.contains(tag)) {
+                    tags.add(tag)
+                    tinyDB.putListString("Expectations", tags as ArrayList<String>?)
+                } else
+                    Toast.makeText(
+                        this@UpdateProfileActivity,
+                        "Tag already present",
+                        Toast.LENGTH_SHORT
+                    ).show()
             }
+            tagView.setTags(tags)
             addTags.text = null
         }
     }

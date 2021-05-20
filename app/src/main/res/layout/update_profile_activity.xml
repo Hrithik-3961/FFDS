@@ -145,10 +145,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 app:atg_backgroundColor="#FE0074"
+                app:atg_borderColor="#FE0074"
                 app:atg_textColor="#fff"
                 app:atg_textSize="12sp" />
 
             <Button
+                android:id="@+id/uploadTimeTable"
                 android:layout_width="110dp"
                 android:layout_height="110dp"
                 android:background="@drawable/button_back3"

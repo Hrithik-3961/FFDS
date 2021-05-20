@@ -11,6 +11,11 @@ val retrofit:Retrofit=Retrofit.Builder().
         baseUrl("https://ffds-new.herokuapp.com/").
         build()
 
+val retrofitForSlots:Retrofit =    Retrofit.Builder()
+    .addConverterFactory(GsonConverterFactory.create())
+    .baseUrl("http://54.91.224.22:8000/")
+    .build()
+
 interface ApiHolder {
     @POST("user/create")
     fun register(@QueryMap fields: MutableMap<String, String?>): Call<ResponseBody>?
@@ -42,10 +47,20 @@ interface ApiHolder {
         @Query("gender") gender: String?,
         @Query("slot") slot: String?
     ): Call<Feed?>?
+
+    @POST("uploadfile")
+    @Multipart
+    fun getSlots(
+
+    )
 }
 
 object Api{
     val retrofitService:ApiHolder by lazy {
         retrofit.create(ApiHolder::class.java)
+    }
+
+    val retrofitService2:ApiHolder by lazy {
+        retrofitForSlots.create(ApiHolder::class.java)
     }
 }

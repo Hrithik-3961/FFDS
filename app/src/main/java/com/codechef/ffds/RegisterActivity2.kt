@@ -21,9 +21,8 @@ class RegisterActivity2 : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.register2_activity)
-
         binding = Register2ActivityBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.apply {
             submitBtn.setOnClickListener {

@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
         signOut.setOnClickListener(v -> {
             tinyDB.clear();
             startActivity(new Intent(getContext(),LoginActivity.class));
-
+            getActivity().finishAffinity();
         });
 
         bio.setText(tinyDB.getString("Bio"));
@@ -59,7 +59,6 @@ public class ProfileFragment extends Fragment {
         Button edit=root.findViewById(R.id.edit_profile);
         edit.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), UpdateProfileActivity.class));
-            getActivity().finishAffinity();
         });
 
         return root;
