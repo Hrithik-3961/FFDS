@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:id="@+id/bottom_nav"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:itemRippleColor="@android:color/white"

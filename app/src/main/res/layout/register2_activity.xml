@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:hint="Full name"
         android:layout_marginTop="30dp"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark">
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:textColor="#E6E4E4"
             android:singleLine="true"
             android:fontFamily="@font/roboto_medium"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -75,8 +75,8 @@
             android:layout_height="wrap_content"
             android:hint="Phone number"
             android:layout_marginTop="30dp"
-            android:textColorHint="@color/colorPrimaryDark"
-            app:hintTextColor="@color/colorPrimaryDark">
+            android:textColorHint="@color/colorPrimary"
+            app:hintTextColor="@color/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 android:singleLine="true"
                 android:textColor="#E6E4E4"
                 android:fontFamily="@font/roboto_medium"
-                android:backgroundTint="@color/colorPrimaryDark"/>
+                android:backgroundTint="@color/colorPrimary"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -190,7 +190,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:text=" by Codechef VIT"
                 android:fontFamily="@font/roboto_medium"
                 android:layout_toRightOf="@+id/t3"

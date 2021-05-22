@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:hint="VIT Email Address"
         android:layout_marginTop="30dp"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark">
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:id="@+id/email_input"
             android:singleLine="true"
             android:fontFamily="@font/roboto_medium"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,10 +60,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Password"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/colorPrimaryDark">
+        app:passwordToggleTint="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:textColor="#E6E4E4"
             android:fontFamily="@font/roboto_medium"
             android:inputType="textPassword"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,10 +82,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Confirm Password"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/colorPrimaryDark">
+        app:passwordToggleTint="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -95,7 +95,7 @@
             android:singleLine="true"
             android:fontFamily="@font/roboto_medium"
             android:inputType="textPassword"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,7 +114,7 @@
         android:layout_height="64dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:textColor="@color/colorAccent"
+        android:textColor="@color/colorPrimary"
         android:text="CONTINUE"
         android:id="@+id/register_btn"
         android:textSize="20sp"
@@ -165,7 +165,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:text=" Login"
             android:fontFamily="@font/roboto_medium"
             android:layout_toEndOf="@+id/account_exists"
@@ -204,7 +204,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:text=" by Codechef VIT"
                 android:fontFamily="@font/roboto_medium"
                 android:layout_toRightOf="@+id/t3"

@@ -19,7 +19,7 @@ class RegisterActivity1 : AppCompatActivity() {
                 val pass = passInput.text.toString()
                 val confirm = confirmPass.text.toString()
 
-                if (!email.contains("vitstudent.ac.in")) {
+                if (!email.endsWith("vitstudent.ac.in")) {
                     prompt.text = "* Enter a valid VIT email"
                     prompt.visibility = View.VISIBLE
                 } else if (email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {

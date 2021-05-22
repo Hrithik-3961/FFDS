@@ -47,8 +47,8 @@
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="10dp"
-                android:src="@color/colorPrimary"
-                app:civ_border_color="#FE0074"
+                android:src="@android:color/black"
+                app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="2dp" />
 
             <Button
@@ -69,7 +69,7 @@
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="YOUR NAME"
-                android:textColor="#FE0074"
+                android:textColor="@color/colorPrimary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
@@ -88,14 +88,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
                 android:hint="Bio"
-                android:textColorHint="@color/colorPrimaryDark"
-                app:hintTextColor="@color/colorPrimaryDark">
+                android:textColorHint="@color/colorPrimary"
+                app:hintTextColor="@color/colorPrimary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/bio"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:backgroundTint="@color/colorPrimary"
                     android:fontFamily="@font/roboto_medium"
                     android:textColor="#E6E4E4" />
 
@@ -110,14 +110,14 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:hint="Expectations"
-                    android:textColorHint="@color/colorPrimaryDark"
-                    app:hintTextColor="@color/colorPrimaryDark">
+                    android:textColorHint="@color/colorPrimary"
+                    app:hintTextColor="@color/colorPrimary">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_tags"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:backgroundTint="@color/colorPrimaryDark"
+                        android:backgroundTint="@color/colorPrimary"
                         android:fontFamily="@font/roboto_medium"
                         android:textColor="#E6E4E4" />
 

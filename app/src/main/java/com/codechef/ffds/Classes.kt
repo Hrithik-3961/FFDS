@@ -116,7 +116,7 @@ class Slots {
 
         itemArray.add(map("D1/L19", false))
         itemArray.add(map("B1/L20", false))
-        itemArray.add(map("G1/L21", false))
+        itemArray.add(map("G1/L21", true))
         itemArray.add(map("TE1/L22", false))
         itemArray.add(map("TCC1/L23", false))
         itemArray.add(map("L24", false))

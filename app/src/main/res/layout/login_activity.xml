@@ -41,8 +41,8 @@
         android:layout_height="wrap_content"
         android:hint="Email Address"
         android:layout_marginTop="30dp"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark">
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -51,7 +51,7 @@
             android:id="@+id/email_input"
             android:singleLine="true"
             android:fontFamily="@font/roboto_medium"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,10 +60,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:hint="Password"
-        android:textColorHint="@color/colorPrimaryDark"
-        app:hintTextColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorPrimary"
+        app:hintTextColor="@color/colorPrimary"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/colorPrimaryDark">
+        app:passwordToggleTint="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
             android:singleLine="true"
             android:fontFamily="@font/roboto_medium"
             android:inputType="textPassword"
-            android:backgroundTint="@color/colorPrimaryDark"/>
+            android:backgroundTint="@color/colorPrimary"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -144,7 +144,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:text=" Create a new account"
             android:id="@+id/create_new"
             android:fontFamily="@font/roboto_medium"
@@ -184,7 +184,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimary"
                 android:text=" by Codechef VIT"
                 android:fontFamily="@font/roboto_medium"
                 android:layout_toRightOf="@+id/t3"
