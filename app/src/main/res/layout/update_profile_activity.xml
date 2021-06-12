@@ -144,9 +144,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                app:atg_backgroundColor="#FE0074"
-                app:atg_borderColor="#FE0074"
-                app:atg_textColor="#fff"
+                app:atg_backgroundColor="@color/colorPrimary"
+                app:atg_borderColor="@color/colorPrimary"
+                app:atg_textColor="@android:color/white"
                 app:atg_textSize="12sp" />
 
             <Button

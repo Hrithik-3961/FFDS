@@ -63,9 +63,9 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FE0074"
+            android:textColor="@color/colorPrimary"
             android:text="+91"
-            android:backgroundTint="#FE0074"
+            android:backgroundTint="@color/colorPrimary"
             android:layout_marginTop="30dp"
             android:textSize="20sp"
             android:textStyle="bold"/>
@@ -117,9 +117,9 @@
             android:checked="true"
             android:onClick="onRadioButtonClicked"
             android:textSize="16sp"
-            android:buttonTint="#FE0074"
+            android:buttonTint="@color/colorPrimary"
             android:fontFamily="@font/roboto_medium"
-            android:textColor="#FE0074"/>
+            android:textColor="@color/colorPrimary"/>
 
         <RadioButton
             android:id="@+id/female"
@@ -128,22 +128,22 @@
             android:text="Female"
             android:onClick="onRadioButtonClicked"
             android:textSize="16sp"
-            android:buttonTint="#FE0074"
+            android:buttonTint="@color/colorPrimary"
             android:fontFamily="@font/roboto_medium"
             android:layout_marginStart="10dp"
-            android:textColor="#FE0074"/>
+            android:textColor="@color/colorPrimary"/>
 
         <RadioButton
             android:id="@+id/others"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
-            android:buttonTint="#FE0074"
+            android:buttonTint="@color/colorPrimary"
             android:onClick="onRadioButtonClicked"
             android:textSize="16sp"
             android:text="Others"
             android:layout_marginStart="10dp"
-            android:textColor="#FE0074"/>
+            android:textColor="@color/colorPrimary"/>
 
     </RadioGroup>
 
