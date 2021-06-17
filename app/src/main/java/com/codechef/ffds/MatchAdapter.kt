@@ -19,7 +19,7 @@ class MatchAdapter internal constructor(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-       holder.dp.setImageResource(matches.get(position))
+       holder.dp.setImageResource(matches[position])
     }
 
     override fun getItemCount(): Int {

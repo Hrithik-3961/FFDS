@@ -1,5 +1,6 @@
 package com.codechef.ffds
 
+import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
@@ -10,7 +11,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.codechef.ffds.databinding.UpdateProfileActivityBinding
 import java.io.*
 import java.util.*
@@ -19,41 +22,55 @@ import kotlin.collections.ArrayList
 
 class UpdateProfileActivity : AppCompatActivity() {
 
-    companion object {
-        const val PICK_IMAGE = 1
-    }
-
     private lateinit var binding: UpdateProfileActivityBinding
+    private val viewModel =
+        ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = UpdateProfileActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val tinyDB = TinyDB(this)
-
-        setDefaultData(tinyDB)
+        setDefaultData()
 
         binding.apply {
             uploadDp.setOnClickListener {
                 val gallery = Intent()
                 gallery.type = "image/*"
                 gallery.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(
-                    Intent.createChooser(gallery, "Select profile photo"),
-                    PICK_IMAGE
-                )
+                val resultLauncher =
+                    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+                        if (result.resultCode == Activity.RESULT_OK) {
+                            val data = result.data
+                            val imageURI: Uri = data?.data!!
+                            val bitmap = if (android.os.Build.VERSION.SDK_INT >= 29)
+                                ImageDecoder.decodeBitmap(
+                                    ImageDecoder.createSource(
+                                        contentResolver,
+                                        imageURI
+                                    )
+                                )
+                            else
+                                MediaStore.Images.Media.getBitmap(contentResolver, imageURI)
+                            binding.dp.setImageBitmap(bitmap)
+                            val path = saveToInternalStorage(bitmap)
+                            viewModel.update(Profile(imagePath = path!!))
+                        }
+
+                    }
+                resultLauncher.launch(Intent.createChooser(gallery, "Select profile photo"))
             }
 
             val tags = ArrayList<String>()
             Collections.addAll(tags, *tagView.tags)
             add.setOnClickListener {
-                handleTags(tags, tinyDB)
+                handleTags(tags)
             }
 
             tagView.setOnTagClickListener { _, tag, _ ->
                 tags.remove(tag)
-                tinyDB.putListString("Expectations", tags as ArrayList<String>?)
+                viewModel.update(Profile(expectations = tags))
                 tagView.setTags(tags)
             }
 
@@ -62,53 +79,48 @@ class UpdateProfileActivity : AppCompatActivity() {
             }
 
             saveProfile.setOnClickListener {
-                tinyDB.putString("Bio", bio.text.toString().trim())
-                tinyDB.putString("Name", yourName.text.toString().trim())
-                tinyDB.putString("PhoneNo", phoneNoEdit.text.toString())
+
+                val user = Profile(
+                    bio = bio.text.toString().trim(),
+                    name = yourName.text.toString().trim(),
+                    phone = phoneNoEdit.text.toString()
+                )
+                viewModel.update(user)
+
                 startActivity(Intent(baseContext, MainActivity::class.java))
                 finish()
             }
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
-            val imageURI: Uri = data?.data!!
-            val bitmap = if (android.os.Build.VERSION.SDK_INT >= 29)
-                ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, imageURI))
-            else
-                MediaStore.Images.Media.getBitmap(contentResolver, imageURI)
-            binding.dp.setImageBitmap(bitmap)
-            val path = saveToInternalStorage(bitmap)
-            val tinyDB = TinyDB(this)
-            tinyDB.putString("ImagePath", path)
-        }
-    }
-
-    private fun setDefaultData(tinyDB: TinyDB) {
+    private fun setDefaultData() {
 
         binding.apply {
-            bio.setText(tinyDB.getString("Bio"))
-            yourName.setText(tinyDB.getString("Name"))
-            phoneNoEdit.text = tinyDB.getString("PhoneNo")
-            tagView.setTags(tinyDB.getListString("Expectations"))
+
+            var user = viewModel.getUserData()
+
+            bio.setText(user.bio)
+            yourName.setText(user.name)
+            phoneNoEdit.text = user.phone
+            tagView.setTags(user.expectations)
+
+            viewModel.update(user)
             try {
-                dp.setImageBitmap(loadImageFromStorage(tinyDB.getString("ImagePath")))
+                user = viewModel.getUserData()
+                dp.setImageBitmap(loadImageFromStorage(user.imagePath))
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             }
         }
     }
 
-    private fun handleTags(tags: ArrayList<String>, tinyDB: TinyDB) {
+    private fun handleTags(tags: ArrayList<String>) {
         binding.apply {
             val tag = addTags.text.toString().trim()
             if (tag.isNotEmpty()) {
                 if (!tags.contains(tag)) {
                     tags.add(tag)
-                    tinyDB.putListString("Expectations", tags as ArrayList<String>?)
+                    viewModel.update(Profile(expectations = tags))
                 } else
                     Toast.makeText(
                         this@UpdateProfileActivity,

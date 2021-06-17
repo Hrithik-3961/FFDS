@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.ViewModelProvider
 import com.codechef.ffds.databinding.Register1ActivityBinding
 
 class RegisterActivity1 : AppCompatActivity() {
@@ -45,10 +46,10 @@ class RegisterActivity1 : AppCompatActivity() {
     }
 
     private fun saveUser(email:String, pass:String){
-        val tinyDB:TinyDB= TinyDB(baseContext)
 
-        tinyDB.putString("Email", email)
-        tinyDB.putString("Password", pass)
+        val viewModel = ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
+        val user = Profile(email = email, password = pass)
+        viewModel.insert(user)
 
         startActivity(Intent(this, RegisterActivity2::class.java))
         finish()

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.codechef.ffds.databinding.ActivityMainBinding
@@ -27,15 +28,17 @@ class MainActivity : AppCompatActivity() {
 
         supportFragmentManager.beginTransaction().replace(R.id.container, ProfileFragment()).commit()
 
-       /* val retrofit: Retrofit = Retrofit.Builder()
+        /*val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://ffds-new.herokuapp.com/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val tinyDB=TinyDB(this)
+        val viewModel = ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
+        val user = viewModel.getUserData()
+
         val apiHolder=retrofit.create(ApiHolder::class.java)
-        val call=apiHolder.showFeed("JWT ${tinyDB.getString("Token")}",
-            tinyDB.getString("Gender"), "20")
+        val call=apiHolder.showFeed("JWT ${user.token}",
+            user.gender, "20")
 
         call.enqueue(object: Callback<Feed>{
             override fun onFailure(call: Call<Feed>, t: Throwable) {

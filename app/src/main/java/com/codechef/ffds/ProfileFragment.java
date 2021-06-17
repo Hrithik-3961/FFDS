@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.aotasoft.taggroup.TagGroup;
 
@@ -30,28 +31,31 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.profile_activity, container, false);
 
+        UserViewModel viewModel = new ViewModelProvider(this, new UserViewModelFactory(requireActivity().getApplication())).get(UserViewModel.class);
+
         TextView bio = root.findViewById(R.id.bio);
         TextView name = root.findViewById(R.id.your_name);
         TextView phone = root.findViewById(R.id.phone_no);
 
-        TinyDB tinyDB=new TinyDB(getContext());
-        ArrayList<String> tags=tinyDB.getListString("Expectations");
+        Profile user = viewModel.getUserData();
+
+        ArrayList<String> tags = (ArrayList<String>) user.getExpectations();
         TagGroup tagContainerLayout = root.findViewById(R.id.tagView);
         tagContainerLayout.setTags(tags);
 
         Button signOut=root.findViewById(R.id.sign_out);
         signOut.setOnClickListener(v -> {
-            tinyDB.clear();
+            viewModel.clear();
             startActivity(new Intent(getContext(),LoginActivity.class));
             getActivity().finishAffinity();
         });
 
-        bio.setText(tinyDB.getString("Bio"));
-        name.setText(tinyDB.getString("Name"));
-        phone.setText(tinyDB.getString("PhoneNo"));
+        bio.setText(user.getBio());
+        name.setText(user.getName());
+        phone.setText(user.getPhone());
         CircleImageView imageView=root.findViewById(R.id.profileImage);
         try {
-            imageView.setImageBitmap(loadImageFromStorage(tinyDB.getString("ImagePath")));
+            imageView.setImageBitmap(loadImageFromStorage(user.getImagePath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

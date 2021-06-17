@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.codechef.ffds.databinding.Register2ActivityBinding
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -18,6 +19,7 @@ class RegisterActivity2 : AppCompatActivity() {
 
     private var gender:String?="Male"
     lateinit var binding:Register2ActivityBinding
+    private val viewModel = ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +39,8 @@ class RegisterActivity2 : AppCompatActivity() {
                     prompt.visibility = View.VISIBLE
                 } else {
                     //registerUser(name, phone)
-                    val tinyDB = TinyDB(baseContext)
-                    tinyDB.putString("Name", name)
-                    tinyDB.putString("PhoneNo", phone)
-                    tinyDB.putString("Gender", gender)
+                    val user = Profile(name = name, phone = phone, gender = gender!!)
+                    viewModel.update(user)
 
                     startActivity(Intent(baseContext, MainActivity::class.java))
                 }
@@ -61,10 +61,8 @@ class RegisterActivity2 : AppCompatActivity() {
 
     fun registerUser(name:String, phone:String){
 
-        val tinyDB= TinyDB(baseContext)
-        tinyDB.putString("Name", name)
-        tinyDB.putString("Phone", phone)
-        tinyDB.putString("Gender", gender)
+        var user = Profile(name = name, phone = phone, gender = gender!!)
+        viewModel.update(user)
 
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("https://ffds-new.herokuapp.com/")
@@ -73,11 +71,12 @@ class RegisterActivity2 : AppCompatActivity() {
 
         val apiHolder=retrofit.create(ApiHolder::class.java)
 
+        user = viewModel.getUserData()
         val fields= mutableMapOf(
             "name" to name,
             "gender" to gender,
-            "password" to tinyDB.getString("Password"),
-            "email" to tinyDB.getString("Email"),
+            "password" to user.password,
+            "email" to user.email,
             "phone" to phone)
 
         Api.retrofitService.register(fields)?.enqueue(object: Callback<ResponseBody> {

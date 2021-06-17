@@ -1,10 +1,11 @@
 package com.codechef.ffds
 
+import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.codechef.ffds.databinding.ActivityTimeTableBinding
@@ -14,10 +15,8 @@ import java.util.*
 class TimeTable : AppCompatActivity() {
 
     companion object {
-        const val PICK_TIME_TABLE = 2
         private val tableMap = Slots().getSlots()
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,10 +28,20 @@ class TimeTable : AppCompatActivity() {
                 val gallery = Intent()
                 gallery.type = "image/*"
                 gallery.action = Intent.ACTION_GET_CONTENT
-                startActivityForResult(
-                    Intent.createChooser(gallery, "Upload Time Table"),
-                    PICK_TIME_TABLE
-                )
+                val resultLauncher =
+                    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+                        if (result.resultCode == Activity.RESULT_OK) {
+                            val data = result.data
+                            val imageUri = data?.data
+                        }
+
+                    }
+                resultLauncher.launch(Intent.createChooser(gallery, "Upload Time Table"))
+            }
+
+            saveTimeTable.setOnClickListener {
+
             }
 
             for (i in 0..6) {
@@ -70,15 +79,6 @@ class TimeTable : AppCompatActivity() {
                 }
                 tableLayout.addView(tableRow)
             }
-
-        }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_TIME_TABLE && resultCode == RESULT_OK) {
-            val imageURI: Uri = data?.data!!
 
         }
     }

@@ -1,5 +1,7 @@
 package com.codechef.ffds
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.io.Serializable
 
 data class User(
@@ -16,27 +18,29 @@ data class Chat(
     val time:String
 )
 
+@Entity
 data class Profile(
-
-    val verified : Boolean,
-    val branch : String,
-    val gender : String,
-    val bio : String,
-    val year : Int,
-    val expectations : List<String>,
-    val slot : String,
-    val _id : String,
-    val name : String,
-    val email : String,
-    val password : String,
-    val phone : Long,
-    val chat : List<String>,
-    val __v : Int,
-    val rand : Int
+    @PrimaryKey(autoGenerate = false) val primaryKey : Int = 0,
+    val token: String = "",
+    val verified : Boolean = false,
+    val branch : String = "",
+    val gender : String = "",
+    val bio : String = "",
+    val year : Int = 0,
+    val expectations : List<String> = emptyList(),
+    val slot : String = "",
+    val _id : String = "",
+    val name : String = "",
+    val email : String = "",
+    val password : String = "",
+    val phone : String = "",
+    val imagePath : String = "",
+    val chat : List<String> = emptyList(),
+    val __v : Int = 0,
+    val rand : Int = 0
 ):Serializable
 
 data class ProfileResponse (
-
     val message : String,
     val user : Profile
 )

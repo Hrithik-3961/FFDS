@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.codechef.ffds.databinding.LoginActivityBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +14,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
+
+    private val viewModel = ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,10 +67,9 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<Token?>, response: Response<Token?>) {
                 Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
                 val token= response.body()?.token
-                val tinyDB=TinyDB(baseContext)
-                tinyDB.putString("Token", response.body()?.token)
                 if(response.message()=="OK") {
                     if (token != null) {
+                        viewModel.insert(Profile(token = token))
                         updateProfile(token, apiHolder, email)
                     }
                     startActivity(Intent(baseContext, MainActivity::class.java))
@@ -86,15 +88,8 @@ class LoginActivity : AppCompatActivity() {
             override fun onResponse(call: Call<ProfileResponse?>, response: Response<ProfileResponse?>) {
                 Toast.makeText(baseContext, response.body()!!.user.name, Toast.LENGTH_SHORT).show()
                 if(response.message()=="OK"){
-                    val profile:Profile= response.body()!!.user
-                    val tinyDB=TinyDB(baseContext)
-                    tinyDB.putString("Branch", profile.branch)
-                    tinyDB.putString("Bio", profile.bio)
-                    tinyDB.putInt("Year", profile.year)
-                    tinyDB.putString("Name", profile.name)
-                    tinyDB.putLong("PhoneNo", profile.phone)
-                    //tinyDB.putString("Slot", profile.slot)(NULL_POINTER)
-                    //tinyDB.putListString("Expectaions", profile.expectations as ArrayList<String>?)
+                    val user:Profile= response.body()!!.user
+                    viewModel.update(user)
                 }
             }
         })
