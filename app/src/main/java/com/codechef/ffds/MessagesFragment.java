@@ -28,7 +28,7 @@ public class MessagesFragment extends Fragment {
         mList.add(R.drawable.re);
         mList.add(R.drawable.re);
         RecyclerView recyclerView=root.findViewById(R.id.matches_view);
-        MatchAdapter adapter=new MatchAdapter(Objects.requireNonNull(getContext()), mList);
+        MatchAdapter adapter=new MatchAdapter(requireContext(), mList);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         recyclerView.setAdapter(adapter);
 

@@ -11,7 +11,7 @@ val retrofit:Retrofit=Retrofit.Builder().
         baseUrl("https://ffds-new.herokuapp.com/").
         build()
 
-val retrofitForSlots:Retrofit =    Retrofit.Builder()
+val retrofitForSlots:Retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
     .baseUrl("http://54.91.224.22:8000/")
     .build()
