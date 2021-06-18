@@ -122,18 +122,6 @@
             app:atg_textColor="#fff"
             app:atg_textSize="12sp" />
 
-        <Button
-            android:layout_width="110dp"
-            android:layout_height="110dp"
-            android:background="@drawable/button_back3"
-            android:drawableStart="@drawable/add_file"
-            android:drawablePadding="4dp"
-            android:fontFamily="@font/roboto_medium"
-            android:text="Upload Timetable"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-
     </LinearLayout>
 
     <RelativeLayout

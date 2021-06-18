@@ -1,33 +1,29 @@
 package com.codechef.ffds
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.codechef.ffds.databinding.LoginActivityBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class LoginActivity : AppCompatActivity() {
 
-    private val viewModel = ViewModelProvider(this, UserViewModelFactory(application)).get(UserViewModel::class.java)
+    lateinit var viewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = LoginActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val retrofit: Retrofit = Retrofit.Builder()
-            .baseUrl("https://ffds-new.herokuapp.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiHolder=retrofit.create(ApiHolder::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            UserViewModelFactory(application)
+        ).get(UserViewModel::class.java)
 
         binding.apply {
             createNew.setOnClickListener {
@@ -49,49 +45,55 @@ class LoginActivity : AppCompatActivity() {
                     prompt.text = "* Enter a valid VIT email"
                     prompt.visibility = View.VISIBLE
                 } else
-                //loginUser(email, password, apiHolder)
-                    startActivity(Intent(baseContext, MainActivity::class.java))
+                    loginUser(email, password)
             }
         }
     }
 
-    fun loginUser(email:String, password:String, apiHolder:ApiHolder){
+    private fun loginUser(email: String, password: String) {
 
-        val fields= mutableMapOf("email" to email, "password" to password)
+        val fields = mutableMapOf("email" to email, "password" to password)
 
-        Api.retrofitService.login(fields)!!.enqueue(object: Callback<Token?> {
+        Api.retrofitService.login(fields)!!.enqueue(object : Callback<Token?> {
             override fun onFailure(call: Call<Token?>, t: Throwable) {
                 Toast.makeText(baseContext, t.message, Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<Token?>, response: Response<Token?>) {
                 Toast.makeText(baseContext, response.message(), Toast.LENGTH_SHORT).show()
-                val token= response.body()?.token
-                if(response.message()=="OK") {
+                val token = response.body()?.token
+                if (response.message() == "OK") {
                     if (token != null) {
                         viewModel.insert(Profile(token = token))
-                        updateProfile(token, apiHolder, email)
+                        updateProfile(token)
                     }
-                    startActivity(Intent(baseContext, MainActivity::class.java))
-                    finish()
                 }
+                else
+                    Toast.makeText(applicationContext, response.message(), Toast.LENGTH_SHORT)
+                        .show()
             }
         })
     }
 
-    fun updateProfile(token: String, apiHolder: ApiHolder, email: String){
-        Api.retrofitService.profileView("JWT $token", email)?.enqueue(object: Callback<ProfileResponse?>{
-            override fun onFailure(call: Call<ProfileResponse?>, t: Throwable) {
-                Toast.makeText(baseContext, t.message, Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onResponse(call: Call<ProfileResponse?>, response: Response<ProfileResponse?>) {
-                Toast.makeText(baseContext, response.body()!!.user.name, Toast.LENGTH_SHORT).show()
-                if(response.message()=="OK"){
-                    val user:Profile= response.body()!!.user
-                    viewModel.update(user)
+    fun updateProfile(token: String) {
+        Api.retrofitService.profileView(token)
+            ?.enqueue(object : Callback<Profile?> {
+                override fun onFailure(call: Call<Profile?>, t: Throwable) {
+                    Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
                 }
-            }
-        })
+                override fun onResponse(
+                    call: Call<Profile?>,
+                    response: Response<Profile?>
+                ) {
+                    if (response.message() == "OK") {
+                        var user: Profile = response.body()!!
+                        viewModel.update(user.copy(token = token))
+                        startActivity(Intent(baseContext, MainActivity::class.java))
+                        finish()
+                    } else
+                        Toast.makeText(applicationContext, response.message(), Toast.LENGTH_LONG)
+                            .show()
+                }
+            })
     }
 }

@@ -23,20 +23,22 @@ class TimeTable : AppCompatActivity() {
         val binding = ActivityTimeTableBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val data = result.data
+                    val imageUri = data?.data
+                }
+
+            }
+
         binding.apply {
             uploadTimeTable.setOnClickListener {
                 val gallery = Intent()
                 gallery.type = "image/*"
                 gallery.action = Intent.ACTION_GET_CONTENT
-                val resultLauncher =
-                    registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
-                        if (result.resultCode == Activity.RESULT_OK) {
-                            val data = result.data
-                            val imageUri = data?.data
-                        }
-
-                    }
                 resultLauncher.launch(Intent.createChooser(gallery, "Upload Time Table"))
             }
 

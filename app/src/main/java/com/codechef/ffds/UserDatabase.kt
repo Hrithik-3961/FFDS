@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 
 @Database(entities = [Profile::class], version = 1)
+@TypeConverters(DataConverter::class)
 abstract class UserDatabase : RoomDatabase() {
 
 
@@ -16,14 +18,14 @@ abstract class UserDatabase : RoomDatabase() {
 
         @Synchronized
         fun getInstance(context: Context): UserDatabase {
-            if (instance == null) {
+
                 instance = Room.databaseBuilder(
                     context.applicationContext,
                     UserDatabase::class.java, "user_database"
                 )
                     .fallbackToDestructiveMigration()
                     .build()
-            }
+
             return instance
         }
     }

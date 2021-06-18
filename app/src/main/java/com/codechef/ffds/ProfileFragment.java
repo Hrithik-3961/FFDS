@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.aotasoft.taggroup.TagGroup;
@@ -37,38 +38,41 @@ public class ProfileFragment extends Fragment {
         TextView name = root.findViewById(R.id.your_name);
         TextView phone = root.findViewById(R.id.phone_no);
 
-        Profile user = viewModel.getUserData();
 
-        ArrayList<String> tags = (ArrayList<String>) user.getExpectations();
-        TagGroup tagContainerLayout = root.findViewById(R.id.tagView);
-        tagContainerLayout.setTags(tags);
+        viewModel.getUserData().observe(getViewLifecycleOwner(), user -> {
 
-        Button signOut=root.findViewById(R.id.sign_out);
-        signOut.setOnClickListener(v -> {
-            viewModel.clear();
-            startActivity(new Intent(getContext(),LoginActivity.class));
-            getActivity().finishAffinity();
+            ArrayList<String> tags = user.getExpectations().isEmpty() ? new ArrayList<>() : (ArrayList<String>) user.getExpectations();
+            TagGroup tagContainerLayout = root.findViewById(R.id.tagView);
+            tagContainerLayout.setTags(tags);
+
+            Button signOut = root.findViewById(R.id.sign_out);
+            signOut.setOnClickListener(v -> {
+                viewModel.clear();
+                startActivity(new Intent(getContext(), LoginActivity.class));
+                getActivity().finishAffinity();
+            });
+
+            bio.setText(user.getBio());
+            name.setText(user.getName());
+            phone.setText(user.getPhone());
+
+            CircleImageView imageView = root.findViewById(R.id.profileImage);
+            try {
+                imageView.setImageBitmap(loadImageFromStorage(user.getImagePath()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         });
-
-        bio.setText(user.getBio());
-        name.setText(user.getName());
-        phone.setText(user.getPhone());
-        CircleImageView imageView=root.findViewById(R.id.profileImage);
-        try {
-            imageView.setImageBitmap(loadImageFromStorage(user.getImagePath()));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Button edit=root.findViewById(R.id.edit_profile);
+        Button edit = root.findViewById(R.id.edit_profile);
         edit.setOnClickListener(v -> {
             startActivity(new Intent(getContext(), UpdateProfileActivity.class));
         });
 
         return root;
     }
+
     private Bitmap loadImageFromStorage(String path) throws FileNotFoundException {
-        File f=new File(path, "profileImage.jpg");
+        File f = new File(path, "profileImage.jpg");
         return BitmapFactory.decodeStream(new FileInputStream(f));
     }
 }

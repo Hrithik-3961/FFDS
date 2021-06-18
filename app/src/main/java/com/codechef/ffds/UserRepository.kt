@@ -1,6 +1,9 @@
 package com.codechef.ffds
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import java.util.concurrent.Callable
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
 class UserRepository(application: Application) {
@@ -14,7 +17,7 @@ class UserRepository(application: Application) {
 
     fun update(user: Profile) = executorService.execute { userDao.update(user) }
 
-    fun getUserData():Profile = userDao.getUserData()
+    fun getUserData() : LiveData<Profile> = userDao.getUserData()
 
     fun clear() = executorService.execute { userDao.clear() }
 }

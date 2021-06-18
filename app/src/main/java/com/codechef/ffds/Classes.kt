@@ -2,51 +2,50 @@ package com.codechef.ffds
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.io.Serializable
 
 data class User(
-    val name:String,
-    val email:String,
-    val bio:String
+    val name: String,
+    val email: String,
+    val bio: String
 )
 
 data class Chat(
-    val email:String,
-    val with:String,
-    val name:String,
-    val msg:String,
-    val time:String
+    val email: String,
+    val with: String,
+    val name: String,
+    val msg: String,
+    val time: String
 )
 
 @Entity
 data class Profile(
-    @PrimaryKey(autoGenerate = false) val primaryKey : Int = 0,
+    @PrimaryKey(autoGenerate = false) val primaryKey: Int = 0,
     val token: String = "",
-    val verified : Boolean = false,
-    val branch : String = "",
-    val gender : String = "",
-    val bio : String = "",
-    val year : Int = 0,
-    val expectations : List<String> = emptyList(),
-    val slot : String = "",
-    val _id : String = "",
-    val name : String = "",
-    val email : String = "",
-    val password : String = "",
-    val phone : String = "",
-    val imagePath : String = "",
-    val chat : List<String> = emptyList(),
-    val __v : Int = 0,
-    val rand : Int = 0
-):Serializable
+    val verified: Boolean = false,
+    val branch: String = "",
+    val gender: String = "",
+    val bio: String = "",
+    val year: String = "",
+    @TypeConverters(DataConverter::class) val expectations: List<String> = emptyList(),
+    @TypeConverters(DataConverter::class) val slot: List<String> = emptyList(),
+    val name: String = "",
+    val email: String = "",
+    val phone: String = "",
+    val imagePath: String = "",
+    val userImage: String = "",
+    @TypeConverters(DataConverter::class) val chat: List<String> = emptyList(),
+) : Serializable
 
-data class ProfileResponse (
-    val message : String,
-    val user : Profile
+data class ProfileResponse(
+    val message: String,
+    val user: Profile
 )
 
 data class Token(
-    val token:String
+    val message: String,
+    val token: String
 )
 
 data class Feed(
@@ -57,12 +56,12 @@ data class Feed(
 data class Messages(
     val lastMessage: String,
     val profileImage: Int,
-    val name:String
+    val name: String
 )
 
 class Slots {
 
-    fun getSlots() : ArrayList<ArrayList<HashMap<String, Boolean>>> {
+    fun getSlots(): ArrayList<ArrayList<HashMap<String, Boolean>>> {
 
         val tableMap = ArrayList<ArrayList<HashMap<String, Boolean>>>()
         var itemArray = ArrayList<HashMap<String, Boolean>>()

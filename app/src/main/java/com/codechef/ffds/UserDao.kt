@@ -1,5 +1,6 @@
 package com.codechef.ffds
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -15,7 +16,7 @@ interface UserDao {
     fun update(user: Profile)
 
     @Query("SELECT * FROM Profile WHERE primaryKey = 0")
-    fun getUserData() : Profile
+    fun getUserData() : LiveData<Profile>
 
     @Query("DELETE FROM Profile")
     fun clear()

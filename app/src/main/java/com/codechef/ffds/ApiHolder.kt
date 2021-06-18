@@ -1,51 +1,56 @@
 package com.codechef.ffds
 
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
 
-val retrofit:Retrofit=Retrofit.Builder().
-        addConverterFactory(GsonConverterFactory.create()).
-        baseUrl("https://ffds-new.herokuapp.com/").
-        build()
+val retrofit: Retrofit = Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+    .baseUrl("https://ffds-backend.azurewebsites.net/").build()
 
-val retrofitForSlots:Retrofit = Retrofit.Builder()
+val retrofitForSlots: Retrofit = Retrofit.Builder()
     .addConverterFactory(GsonConverterFactory.create())
     .baseUrl("http://54.91.224.22:8000/")
     .build()
 
 interface ApiHolder {
-    @POST("user/create")
-    fun register(@QueryMap fields: MutableMap<String, String?>): Call<ResponseBody>?
+    @FormUrlEncoded
+    @POST("user/register")
+    fun register(@FieldMap fields: Map<String, String>): Call<ResponseBody?>?
 
+    @FormUrlEncoded
     @POST("user/login")
-    fun login(@QueryMap fields: MutableMap<String, String>): Call<Token?>?
+    fun login(@FieldMap fields: Map<String, String>): Call<Token?>?
 
-    @POST("updateDetails")
-    fun update(@QueryMap fields: Map<String?, String?>?): Call<ResponseBody?>?
+    @PUT("user/update")
+    fun update(
+        @Header("Authorization") header: String?,
+        @Body fields: RequestBody
+    ): Call<ResponseBody?>?
 
-    @POST("showDetails")
-    fun show(@QueryMap fields: Map<String?, String?>?): Call<User?>?
+    @FormUrlEncoded
+    @GET("user/details")
+    fun show(@FieldMap fields: Map<String?, String?>?): Call<User?>?
 
     @POST("add/new/chat")
     fun addChat(@Body chat: Chat?): Call<Chat?>?
 
-    @GET("user/profileView")
+    @GET("user/profile")
     fun profileView(
         @Header("Authorization") header: String?,
-        @Query("email") email: String?
-    ): Call<ProfileResponse?>?
+    ): Call<Profile?>?
 
     @POST("user/send/verification/link?mailto=axil.ishan3@gmail.com")
     fun sendMail(): Call<ResponseBody?>?
 
+    @FormUrlEncoded
     @GET("user/showfeed")
     fun showFeed(
         @Header("Authorization") header: String?,
-        @Query("gender") gender: String?,
-        @Query("slot") slot: String?
+        @Field("gender") gender: String?,
+        @Field("slot") slot: String?
     ): Call<Feed?>?
 
     @POST("uploadfile")
@@ -55,12 +60,12 @@ interface ApiHolder {
     )
 }
 
-object Api{
-    val retrofitService:ApiHolder by lazy {
+object Api {
+    val retrofitService: ApiHolder by lazy {
         retrofit.create(ApiHolder::class.java)
     }
 
-    val retrofitService2:ApiHolder by lazy {
+    val retrofitService2: ApiHolder by lazy {
         retrofitForSlots.create(ApiHolder::class.java)
     }
 }
